@@ -1,7 +1,18 @@
+import { useParams } from 'react-router-dom';
+import { films } from '../../mocks/films';
+import NotFound from '../not-found/not-found';
+
 function Player(): JSX.Element {
+  const filmId = Number(useParams().id);
+  const film = films.find((element) => element.id === filmId);
+
+  if (film === undefined) {
+    return <NotFound />;
+  }
+
   return (
     <div className="player">
-      <video src="#" className="player__video" poster="img/player-poster.jpg"></video>
+      <video src={film.videoLink} className="player__video" poster={film.backgroundImage}></video>
 
       <button type="button" className="player__exit">Exit</button>
 
