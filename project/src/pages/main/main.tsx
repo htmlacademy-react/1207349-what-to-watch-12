@@ -1,15 +1,25 @@
 import { CARD_DISPLAY_COUNT } from '../../const';
-import Card from '../../components/card/card';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
+import { films } from '../../mocks/films';
+import Catalog from '../../components/catalog/catalog';
+import { useState } from 'react';
+import Genres from '../../components/genres/genres';
+import FilmInfo from '../../components/film-info/film-info';
+import FilmPoster from '../../components/film-poster/film-poster';
+import FilmBG from '../../components/film-bg/film-bg';
+
 
 function Main(): JSX.Element {
+  const [, setActiveCard] = useState<number | null>(null);
+
+  const mainFilm = films[0];
+
   return (
     <>
       <section className="film-card">
-        <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
-        </div>
+
+        <FilmBG filmPoster={mainFilm.backgroundImage} filmName={mainFilm.name} />
 
         <h1 className="visually-hidden">WTW</h1>
 
@@ -17,33 +27,11 @@ function Main(): JSX.Element {
 
         <div className="film-card__wrap">
           <div className="film-card__info">
-            <div className="film-card__poster">
-              <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
-            </div>
 
-            <div className="film-card__desc">
-              <h2 className="film-card__title">The Grand Budapest Hotel</h2>
-              <p className="film-card__meta">
-                <span className="film-card__genre">Drama</span>
-                <span className="film-card__year">2014</span>
-              </p>
+            <FilmPoster filmPoster={mainFilm.posterImage} filmName={mainFilm.name} />
 
-              <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
-                  <svg viewBox="0 0 19 19" width="19" height="19">
-                    <use xlinkHref="#play-s"></use>
-                  </svg>
-                  <span>Play</span>
-                </button>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                  <span className="film-card__count">9</span>
-                </button>
-              </div>
-            </div>
+            <FilmInfo film={mainFilm} />
+
           </div>
         </div>
       </section>
@@ -52,46 +40,9 @@ function Main(): JSX.Element {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="/" className="catalog__genres-link">All genres</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Comedies</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Crime</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Documentary</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Dramas</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Horror</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Kids & Family</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Romance</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Sci-Fi</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/" className="catalog__genres-link">Thrillers</a>
-            </li>
-          </ul>
+          <Genres />
 
-          <div className="catalog__films-list">
-            {[...Array(CARD_DISPLAY_COUNT).keys()].map((card, i) => {
-              const key = i + 10;
-
-              return <Card key={key} />;
-            })}
-          </div>
+          <Catalog films={films.slice(0, CARD_DISPLAY_COUNT)} onMouseOver={setActiveCard} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
