@@ -3,7 +3,6 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import { films } from '../../mocks/films';
 import Catalog from '../../components/catalog/catalog';
-import { useState } from 'react';
 import Genres from '../../components/genres/genres';
 import FilmInfo from '../../components/film-info/film-info';
 import FilmPoster from '../../components/film-poster/film-poster';
@@ -11,8 +10,6 @@ import FilmBG from '../../components/film-bg/film-bg';
 
 
 function Main(): JSX.Element {
-  const [, setActiveCard] = useState<number | null>(null);
-
   const mainFilm = films[0];
 
   return (
@@ -42,7 +39,7 @@ function Main(): JSX.Element {
 
           <Genres />
 
-          <Catalog films={films.slice(0, CARD_DISPLAY_COUNT)} onMouseOver={setActiveCard} />
+          <Catalog films={films.slice(0, CARD_DISPLAY_COUNT)} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
