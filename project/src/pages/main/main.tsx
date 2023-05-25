@@ -1,15 +1,20 @@
-import { CARD_DISPLAY_COUNT } from '../../const';
+import { ALL_GENRES, CARD_DISPLAY_COUNT } from '../../const';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import { films } from '../../mocks/films';
 import Catalog from '../../components/catalog/catalog';
 import Genres from '../../components/genres/genres';
 import FilmInfo from '../../components/film-info/film-info';
 import FilmPoster from '../../components/film-poster/film-poster';
 import FilmBG from '../../components/film-bg/film-bg';
+import { useAppSelector } from '../../hooks';
 
 
 function Main(): JSX.Element {
+  const films = useAppSelector((state) => state.films);
+  const genre = useAppSelector((state) => state.genre);
+
+  const filmsByGenre = genre === ALL_GENRES ? films : films.filter((film) => film.genre === genre);
+
   const mainFilm = films[0];
 
   return (
@@ -37,9 +42,9 @@ function Main(): JSX.Element {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <Genres />
+          <Genres films={films} selectedGenre={genre} />
 
-          <Catalog films={films.slice(0, CARD_DISPLAY_COUNT)} />
+          <Catalog films={filmsByGenre.slice(0, CARD_DISPLAY_COUNT)} />
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>

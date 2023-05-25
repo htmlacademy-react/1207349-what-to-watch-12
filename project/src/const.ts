@@ -1,6 +1,7 @@
 export const CARD_DISPLAY_COUNT = 20;
 export const RELATED_DISPLAY_COUNT = 4;
 export const RATING_INPUT_COUNT = 10;
+export const ALL_GENRES = 'All genres';
 
 export enum AppRoute {
   Main = '/',
