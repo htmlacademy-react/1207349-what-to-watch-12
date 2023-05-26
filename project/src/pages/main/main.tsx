@@ -31,7 +31,7 @@ function Main(): JSX.Element {
 
         <h1 className="visually-hidden">WTW</h1>
 
-        <Header className="film-card__head" isAuth />
+        <Header className="film-card__head" />
 
         <div className="film-card__wrap">
           <div className="film-card__info">

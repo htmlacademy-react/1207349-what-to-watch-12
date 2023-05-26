@@ -14,7 +14,7 @@ function Review(): JSX.Element {
 
         <h1 className="visually-hidden">WTW</h1>
 
-        <Header isAuth addBreadCrumb />
+        <Header addBreadCrumb />
 
         <FilmPoster
           filmPoster={mainFilm.posterImage}
