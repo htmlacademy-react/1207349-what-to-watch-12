@@ -1,4 +1,4 @@
-import { ALL_GENRES, CARD_DISPLAY_COUNT } from '../../const';
+import { ALL_GENRES, CARD_DISPLAY_COUNT, GENRE_DISPLAY_COUNT } from '../../const';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import Catalog from '../../components/catalog/catalog';
@@ -7,13 +7,19 @@ import FilmInfo from '../../components/film-info/film-info';
 import FilmPoster from '../../components/film-poster/film-poster';
 import FilmBG from '../../components/film-bg/film-bg';
 import { useAppSelector } from '../../hooks';
+import MoreButton from '../../components/more-button/more-butten';
+import { useState } from 'react';
 
 
 function Main(): JSX.Element {
-  const films = useAppSelector((state) => state.films);
-  const genre = useAppSelector((state) => state.genre);
+  const [showCount, setShowCount] = useState<number>(CARD_DISPLAY_COUNT);
 
-  const filmsByGenre = genre === ALL_GENRES ? films : films.filter((film) => film.genre === genre);
+  const films = useAppSelector((state) => state.films);
+  const selectedGenre = useAppSelector((state) => state.genre);
+
+  const genres = [ALL_GENRES, ...new Set(films.map((film) => film.genre))];
+
+  const filmsByGenre = selectedGenre === ALL_GENRES ? films : films.filter((film) => film.genre === selectedGenre);
 
   const mainFilm = films[0];
 
@@ -42,13 +48,14 @@ function Main(): JSX.Element {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <Genres films={films} selectedGenre={genre} />
+          <Genres genres={genres.slice(0, GENRE_DISPLAY_COUNT)} selectedGenre={selectedGenre} />
 
-          <Catalog films={filmsByGenre.slice(0, CARD_DISPLAY_COUNT)} />
+          <Catalog films={filmsByGenre.slice(0, showCount)} />
 
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          {filmsByGenre.length > showCount && (
+            <MoreButton showCount={showCount} setShowCount={setShowCount} />
+          )}
+
         </section>
 
         <Footer />
