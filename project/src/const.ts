@@ -24,3 +24,15 @@ export enum Tab {
   Details = 'Details',
   Reviews = 'Reviews',
 }
+
+export enum APIRoute {
+  Films = '/films',
+  Film = '/films/{filmId}',
+  FilmSimilar = '/films/{filmId}/similar',
+  Promo = '/promo',
+  Favorite = '/favorite',
+  FavoriteStatus = '/favorite/{filmId}/{status}',
+  Comments = '/comments/{filmId}',
+  Login = '/login',
+  Logout = '/logout',
+}
