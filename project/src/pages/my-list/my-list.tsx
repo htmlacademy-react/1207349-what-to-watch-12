@@ -8,7 +8,7 @@ function MyList(): JSX.Element {
   return (
     <Layout>
 
-      <Header className="user-page__head" isAuth title="My list" />
+      <Header className="user-page__head" title="My list" />
 
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>

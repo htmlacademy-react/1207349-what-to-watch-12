@@ -1,15 +1,16 @@
 import classNames from 'classnames';
 import { Link, useLocation } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthStatus } from '../../const';
+import { useAppSelector } from '../../hooks';
 
 type HeaderProps = {
   className?: string;
-  isAuth?: boolean;
   title?: string;
   addBreadCrumb?: boolean;
 };
 
-function Header({className, isAuth = false, title, addBreadCrumb = false}: HeaderProps): JSX.Element {
+function Header({className, title, addBreadCrumb = false}: HeaderProps): JSX.Element {
+  const isAuth = useAppSelector((state) => state.authorizationStatus === AuthStatus.Auth);
   const location = useLocation();
   const isMyListPage = AppRoute.MyList === location.pathname;
 
@@ -41,7 +42,7 @@ function Header({className, isAuth = false, title, addBreadCrumb = false}: Heade
           </ul>
         </nav>}
 
-      {isAuth &&
+      {isAuth ? (
         <ul className="user-block">
           <li className="user-block__item">
             <div className="user-block__avatar">
@@ -51,7 +52,12 @@ function Header({className, isAuth = false, title, addBreadCrumb = false}: Heade
           <li className="user-block__item">
             <Link to={AppRoute.SignIn} className="user-block__link">Sign out</Link>
           </li>
-        </ul>}
+        </ul>
+      ) : (
+        <div className="user-block">
+          <Link to={AppRoute.SignIn} className="user-block__link">Sign in</Link>
+        </div>
+      )}
     </header>
   );
 }
