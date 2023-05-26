@@ -1,18 +1,13 @@
-import { ALL_GENRES } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { changeGenre } from '../../store/actions';
-import { Films } from '../../types/films';
 import classNames from 'classnames';
 
 type GenresProps = {
-  films: Films;
+  genres: string[];
   selectedGenre: string;
 }
 
-function Genres({films, selectedGenre}: GenresProps): JSX.Element {
-  const genres = Array.from(new Set(films.map((film) => film.genre)));
-  genres.unshift(ALL_GENRES);
-
+function Genres({genres, selectedGenre}: GenresProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   return (
