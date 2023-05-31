@@ -1,18 +1,25 @@
 import classNames from 'classnames';
 import { Link, useLocation } from 'react-router-dom';
 import { AppRoute, AuthStatus } from '../../const';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { logoutAction } from '../../store/api-actions';
+import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 
 type HeaderProps = {
   className?: string;
   title?: string;
-  addBreadCrumb?: boolean;
 };
 
-function Header({className, title, addBreadCrumb = false}: HeaderProps): JSX.Element {
-  const isAuth = useAppSelector((state) => state.authorizationStatus === AuthStatus.Auth);
+function Header({className, title}: HeaderProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const location = useLocation();
+
+  const film = useAppSelector((state) => state.film);
+  const isAuth = useAppSelector((state) => state.authorizationStatus === AuthStatus.Auth);
+
   const isMyListPage = AppRoute.MyList === location.pathname;
+  const isReviewPage = film && AppRoute.AddReview.replace(':id', film.id.toString()) === location.pathname;
 
   return (
     <header className={classNames('page-header', className)}>
@@ -30,17 +37,7 @@ function Header({className, title, addBreadCrumb = false}: HeaderProps): JSX.Ele
           {isMyListPage && <span className="user-page__film-count">9</span>}
         </h1>}
 
-      {addBreadCrumb &&
-        <nav className="breadcrumbs">
-          <ul className="breadcrumbs__list">
-            <li className="breadcrumbs__item">
-              <Link to={AppRoute.Film.replace(':id', '1')} className="breadcrumbs__link">The Grand Budapest Hotel</Link>
-            </li>
-            <li className="breadcrumbs__item">
-              <Link to={AppRoute.AddReview.replace(':id', '1')} className="breadcrumbs__link">Add review</Link>
-            </li>
-          </ul>
-        </nav>}
+      {isReviewPage && <Breadcrumbs filmName={film.name} filmId={film.id} />}
 
       {isAuth ? (
         <ul className="user-block">
@@ -50,7 +47,16 @@ function Header({className, title, addBreadCrumb = false}: HeaderProps): JSX.Ele
             </div>
           </li>
           <li className="user-block__item">
-            <Link to={AppRoute.SignIn} className="user-block__link">Sign out</Link>
+            <Link
+              to={AppRoute.SignIn}
+              className="user-block__link"
+              onClick={(evt) => {
+                evt.preventDefault();
+                dispatch(logoutAction());
+              }}
+            >
+              Sign out
+            </Link>
           </li>
         </ul>
       ) : (

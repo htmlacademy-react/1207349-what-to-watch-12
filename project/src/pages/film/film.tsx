@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import { films } from '../../mocks/films';
 import NotFound from '../not-found/not-found';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
@@ -9,12 +8,26 @@ import { RELATED_DISPLAY_COUNT } from '../../const';
 import FilmPoster from '../../components/film-poster/film-poster';
 import FilmBG from '../../components/film-bg/film-bg';
 import FilmTabs from '../../components/film-tabs/film-tabs';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchFilmAction, fetchFilmReviewsAction, fetchFilmSimilarAction } from '../../store/api-actions';
+import { useEffect } from 'react';
 
 function Film(): JSX.Element {
-  const filmId = Number(useParams().id);
-  const film = films.find((element) => element.id === filmId);
+  const dispatch = useAppDispatch();
 
-  if (film === undefined) {
+  const filmId = Number(useParams().id);
+
+  useEffect(() => {
+    dispatch(fetchFilmAction(filmId));
+    dispatch(fetchFilmSimilarAction(filmId));
+    dispatch(fetchFilmReviewsAction(filmId));
+  }, [dispatch, filmId]);
+
+  const film = useAppSelector((state) => state.film);
+  const filmSimilar = useAppSelector((state) => state.filmSimilar);
+  const filmReviews = useAppSelector((state) => state.filmReviews);
+
+  if (film === null) {
     return <NotFound />;
   }
 
@@ -43,7 +56,7 @@ function Film(): JSX.Element {
               className='film-card__poster--big'
             />
 
-            <FilmTabs film={film} />
+            <FilmTabs film={film} reviews={filmReviews} />
 
           </div>
         </div>
@@ -53,7 +66,7 @@ function Film(): JSX.Element {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <Catalog films={films.slice(0, RELATED_DISPLAY_COUNT)} />
+          <Catalog films={filmSimilar.slice(0, RELATED_DISPLAY_COUNT)} />
 
         </section>
 

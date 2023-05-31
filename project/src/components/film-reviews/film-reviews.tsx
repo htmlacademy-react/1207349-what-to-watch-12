@@ -1,29 +1,22 @@
-import { comments } from '../../mocks/comments';
-import { format } from 'date-fns';
+import { Reviews } from '../../types/reviews';
+import Review from '../film-review/film-review';
 
-function FilmReviews(): JSX.Element {
+type FilmReviewsProps = {
+  reviews: Reviews;
+}
+
+function FilmReviews({reviews}: FilmReviewsProps): JSX.Element {
+  const indexToSplit = Math.ceil(reviews.length / 2);
+  const firstColReviews = reviews.slice(0, indexToSplit);
+  const secondColReviews = reviews.slice(indexToSplit);
+
   return (
     <div className="film-card__reviews film-card__row">
       <div className="film-card__reviews-col">
-        {comments.map((item) => {
-          const {id, comment, date, rating, user} = item;
-          const dateObj = new Date(date);
-
-          return (
-            <div key={id} className="review">
-              <blockquote className="review__quote">
-                <p className="review__text">{comment}</p>
-                <footer className="review__details">
-                  <cite className="review__author">{user.name}</cite>
-                  <time className="review__date" dateTime={format(dateObj, 'yyyy-MM-dd')}>
-                    {format(dateObj, 'MMMM dd, yyyy')}
-                  </time>
-                </footer>
-              </blockquote>
-              <div className="review__rating">{rating}</div>
-            </div>
-          );
-        })}
+        {firstColReviews.map((item) => <Review key={item.id} review={item} />)}
+      </div>
+      <div className="film-card__reviews-col">
+        {secondColReviews.map((item) => <Review key={item.id} review={item} />)}
       </div>
     </div>
   );

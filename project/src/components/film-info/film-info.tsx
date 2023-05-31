@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Film } from '../../types/films';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthStatus } from '../../const';
+import { useAppSelector } from '../../hooks';
 
 type FilmInfoProps = {
   film: Film;
@@ -8,7 +9,11 @@ type FilmInfoProps = {
 
 function FilmInfo({film}: FilmInfoProps): JSX.Element {
   const location = useLocation();
+
+  const isAuth = useAppSelector((state) => state.authorizationStatus === AuthStatus.Auth);
+
   const isFilmPage = AppRoute.Film.replace(':id', film.id.toString()) === location.pathname;
+
 
   return (
     <div className="film-card__desc">
@@ -24,14 +29,15 @@ function FilmInfo({film}: FilmInfoProps): JSX.Element {
           </svg>
           <span>Play</span>
         </button>
-        <button className="btn btn--list film-card__button" type="button">
-          <svg viewBox="0 0 19 20" width="19" height="20">
-            <use xlinkHref="#add"></use>
-          </svg>
-          <span>My list</span>
-          <span className="film-card__count">9</span>
-        </button>
-        {isFilmPage &&
+        {isAuth &&
+          <button className="btn btn--list film-card__button" type="button">
+            <svg viewBox="0 0 19 20" width="19" height="20">
+              <use xlinkHref="#add"></use>
+            </svg>
+            <span>My list</span>
+            <span className="film-card__count">9</span>
+          </button>}
+        {isFilmPage && isAuth &&
           <Link
             to={AppRoute.AddReview.replace(':id', film.id.toString())}
             className="btn film-card__button"

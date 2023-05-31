@@ -1,30 +1,46 @@
+import { useParams } from 'react-router-dom';
 import FilmBG from '../../components/film-bg/film-bg';
 import FilmPoster from '../../components/film-poster/film-poster';
 import Header from '../../components/header/header';
 import ReviewForm from '../../components/review-form/review-form';
-import { films } from '../../mocks/films';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import NotFound from '../not-found/not-found';
+import { fetchFilmAction } from '../../store/api-actions';
+import { useEffect } from 'react';
 
 function Review(): JSX.Element {
-  const mainFilm = films[0];
+  const dispatch = useAppDispatch();
+
+  const filmId = Number(useParams().id);
+
+  useEffect(() => {
+    dispatch(fetchFilmAction(filmId));
+  }, [dispatch, filmId]);
+
+  const film = useAppSelector((state) => state.film);
+
+  if (film === null) {
+    return <NotFound />;
+  }
 
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
-        <FilmBG filmPoster={mainFilm.backgroundImage} filmName={mainFilm.name} />
+        <FilmBG filmPoster={film.backgroundImage} filmName={film.name} />
 
         <h1 className="visually-hidden">WTW</h1>
 
-        <Header addBreadCrumb />
+        <Header />
 
         <FilmPoster
-          filmPoster={mainFilm.posterImage}
-          filmName={mainFilm.name}
+          filmPoster={film.posterImage}
+          filmName={film.name}
           className='film-card__poster--small'
         />
       </div>
 
       <div className="add-review">
-        <ReviewForm />
+        <ReviewForm filmId={film.id}/>
       </div>
 
     </section>
