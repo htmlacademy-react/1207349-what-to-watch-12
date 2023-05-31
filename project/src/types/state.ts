@@ -12,6 +12,7 @@ export type UserProcess = {
 export type FilmsData = {
   films: Films;
   film: Film | null;
+  promoFilm: Film | null;
   similarFilms: Films;
   filmReviews: Reviews;
   isFilmsDataLoading: boolean;

@@ -4,7 +4,7 @@ import Genres from '../../components/genres/genres';
 import { useAppSelector } from '../../hooks';
 import MoreButton from '../../components/more-button/more-butten';
 import { useState } from 'react';
-import { getFilms } from '../../store/films-data/selectors';
+import { getFilms, getPromoFilm } from '../../store/films-data/selectors';
 import { getGenre } from '../../store/films-process/selectors';
 import PageContentLayout from '../../components/page-content-layout/page-content-layout';
 import FilmCardPromo from '../../components/film-card-promo/film-card-promo';
@@ -14,17 +14,16 @@ function Main(): JSX.Element {
   const [showCount, setShowCount] = useState<number>(CARD_DISPLAY_COUNT);
 
   const films = useAppSelector(getFilms);
+  const promoFilm = useAppSelector(getPromoFilm);
   const selectedGenre = useAppSelector(getGenre);
 
   const genres = [ALL_GENRES, ...new Set(films.map((film) => film.genre))];
 
   const filmsByGenre = selectedGenre === ALL_GENRES ? films : films.filter((film) => film.genre === selectedGenre);
 
-  const mainFilm = films[0];
-
   return (
     <>
-      <FilmCardPromo film={mainFilm} />
+      {promoFilm && <FilmCardPromo film={promoFilm} />}
 
       <PageContentLayout title="Catalog" hideTitle>
 
