@@ -13,7 +13,7 @@ type FilmCardProps = {
 
 function FilmCard({film, reviews}: FilmCardProps): JSX.Element {
   return (
-    <section className="film-card film-card--full">
+    <section className="film-card film-card--full" style={{ backgroundColor: film.backgroundColor }}>
       <div className="film-card__hero">
 
         <FilmBG filmPoster={film.backgroundImage} filmName={film.name} />

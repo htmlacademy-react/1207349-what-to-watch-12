@@ -45,7 +45,7 @@ function ReviewForm({filmId}: ReviewFormProps): JSX.Element {
           ))}
         </div>
       </div>
-      <div className="add-review__text">
+      <div className="add-review__text" style={{ backgroundColor: 'rgba(255, 255, 255, 0.25)' }}>
         <textarea
           className="add-review__textarea"
           name="comment"
