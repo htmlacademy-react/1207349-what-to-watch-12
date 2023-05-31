@@ -3,19 +3,21 @@ import { Link, useLocation } from 'react-router-dom';
 import { AppRoute, AuthStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
+import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 
 type HeaderProps = {
   className?: string;
   title?: string;
-  addBreadCrumb?: boolean;
 };
 
-function Header({className, title, addBreadCrumb = false}: HeaderProps): JSX.Element {
+function Header({className, title}: HeaderProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const location = useLocation();
 
+  const film = useAppSelector((state) => state.film);
   const isAuth = useAppSelector((state) => state.authorizationStatus === AuthStatus.Auth);
+
   const isMyListPage = AppRoute.MyList === location.pathname;
 
   return (
@@ -34,17 +36,7 @@ function Header({className, title, addBreadCrumb = false}: HeaderProps): JSX.Ele
           {isMyListPage && <span className="user-page__film-count">9</span>}
         </h1>}
 
-      {addBreadCrumb &&
-        <nav className="breadcrumbs">
-          <ul className="breadcrumbs__list">
-            <li className="breadcrumbs__item">
-              <Link to={AppRoute.Film.replace(':id', '1')} className="breadcrumbs__link">The Grand Budapest Hotel</Link>
-            </li>
-            <li className="breadcrumbs__item">
-              <Link to={AppRoute.AddReview.replace(':id', '1')} className="breadcrumbs__link">Add review</Link>
-            </li>
-          </ul>
-        </nav>}
+      {film && <Breadcrumbs filmName={film.name} filmId={film.id} />}
 
       {isAuth ? (
         <ul className="user-block">
