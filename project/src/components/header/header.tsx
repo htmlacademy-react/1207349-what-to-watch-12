@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import { Link, useLocation } from 'react-router-dom';
 import { AppRoute, AuthStatus } from '../../const';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { logoutAction } from '../../store/api-actions';
 
 type HeaderProps = {
   className?: string;
@@ -10,8 +11,11 @@ type HeaderProps = {
 };
 
 function Header({className, title, addBreadCrumb = false}: HeaderProps): JSX.Element {
-  const isAuth = useAppSelector((state) => state.authorizationStatus === AuthStatus.Auth);
+  const dispatch = useAppDispatch();
+
   const location = useLocation();
+
+  const isAuth = useAppSelector((state) => state.authorizationStatus === AuthStatus.Auth);
   const isMyListPage = AppRoute.MyList === location.pathname;
 
   return (
@@ -50,7 +54,16 @@ function Header({className, title, addBreadCrumb = false}: HeaderProps): JSX.Ele
             </div>
           </li>
           <li className="user-block__item">
-            <Link to={AppRoute.SignIn} className="user-block__link">Sign out</Link>
+            <Link
+              to={AppRoute.SignIn}
+              className="user-block__link"
+              onClick={(evt) => {
+                evt.preventDefault();
+                dispatch(logoutAction());
+              }}
+            >
+              Sign out
+            </Link>
           </li>
         </ul>
       ) : (
