@@ -1,6 +1,6 @@
 import { useAppDispatch } from '../../hooks';
-import { changeGenre } from '../../store/actions';
 import classNames from 'classnames';
+import { changeGenre } from '../../store/films-process/films-process';
 
 type GenresProps = {
   genres: string[];

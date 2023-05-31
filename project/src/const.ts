@@ -28,11 +28,24 @@ export enum Tab {
 export enum APIRoute {
   Films = '/films',
   Film = '/films/{filmId}',
-  FilmSimilar = '/films/{filmId}/similar',
+  SimilarFilm = '/films/{filmId}/similar',
   Promo = '/promo',
   Favorite = '/favorite',
   FavoriteStatus = '/favorite/{filmId}/{status}',
   Reviews = '/comments/{filmId}',
   Login = '/login',
   Logout = '/logout',
+}
+
+export enum NameSpace {
+  Films = 'FILMS',
+  Data = 'DATA',
+  User = 'USER',
+}
+
+export enum RequestStatus {
+  Idle = 'IDLE',
+  Pending = 'PENDING',
+  Fulfilled = 'FULFILLED',
+  Rejected = 'REJECTED',
 }

@@ -1,66 +1,42 @@
 import { ALL_GENRES, CARD_DISPLAY_COUNT, GENRE_DISPLAY_COUNT } from '../../const';
-import Header from '../../components/header/header';
-import Footer from '../../components/footer/footer';
 import Catalog from '../../components/catalog/catalog';
 import Genres from '../../components/genres/genres';
-import FilmInfo from '../../components/film-info/film-info';
-import FilmPoster from '../../components/film-poster/film-poster';
-import FilmBG from '../../components/film-bg/film-bg';
 import { useAppSelector } from '../../hooks';
 import MoreButton from '../../components/more-button/more-butten';
 import { useState } from 'react';
+import { getFilms, getPromoFilm } from '../../store/films-data/selectors';
+import { getGenre } from '../../store/films-process/selectors';
+import PageContentLayout from '../../components/page-content-layout/page-content-layout';
+import FilmCardPromo from '../../components/film-card-promo/film-card-promo';
 
 
 function Main(): JSX.Element {
   const [showCount, setShowCount] = useState<number>(CARD_DISPLAY_COUNT);
 
-  const films = useAppSelector((state) => state.films);
-  const selectedGenre = useAppSelector((state) => state.genre);
+  const films = useAppSelector(getFilms);
+  const promoFilm = useAppSelector(getPromoFilm);
+  const selectedGenre = useAppSelector(getGenre);
 
   const genres = [ALL_GENRES, ...new Set(films.map((film) => film.genre))];
 
   const filmsByGenre = selectedGenre === ALL_GENRES ? films : films.filter((film) => film.genre === selectedGenre);
 
-  const mainFilm = films[0];
-
   return (
     <>
-      <section className="film-card">
+      {promoFilm && <FilmCardPromo film={promoFilm} />}
 
-        <FilmBG filmPoster={mainFilm.backgroundImage} filmName={mainFilm.name} />
+      <PageContentLayout title="Catalog" hideTitle>
 
-        <h1 className="visually-hidden">WTW</h1>
+        <Genres genres={genres.slice(0, GENRE_DISPLAY_COUNT)} selectedGenre={selectedGenre} />
 
-        <Header className="film-card__head" />
+        <Catalog films={filmsByGenre.slice(0, showCount)} />
 
-        <div className="film-card__wrap">
-          <div className="film-card__info">
+        {filmsByGenre.length > showCount && (
+          <MoreButton showCount={showCount} setShowCount={setShowCount} />
+        )}
 
-            <FilmPoster filmPoster={mainFilm.posterImage} filmName={mainFilm.name} />
+      </PageContentLayout>
 
-            <FilmInfo film={mainFilm} />
-
-          </div>
-        </div>
-      </section>
-
-      <div className="page-content">
-        <section className="catalog">
-          <h2 className="catalog__title visually-hidden">Catalog</h2>
-
-          <Genres genres={genres.slice(0, GENRE_DISPLAY_COUNT)} selectedGenre={selectedGenre} />
-
-          <Catalog films={filmsByGenre.slice(0, showCount)} />
-
-          {filmsByGenre.length > showCount && (
-            <MoreButton showCount={showCount} setShowCount={setShowCount} />
-          )}
-
-        </section>
-
-        <Footer />
-
-      </div>
     </>
   );
 }

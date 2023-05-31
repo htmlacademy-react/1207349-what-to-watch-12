@@ -3,14 +3,14 @@ import { AppRoute } from '../../const';
 import VideoPlayer from '../video-player/video-player';
 import { useEffect, useState } from 'react';
 
-type CardProps = {
+type FilmCardSmallProps = {
   id: number;
   name: string;
   previewImage: string;
   previewVideoLink: string;
 }
 
-function Card({id, name, previewImage, previewVideoLink}: CardProps): JSX.Element {
+function FilmCardSmall({id, name, previewImage, previewVideoLink}: FilmCardSmallProps): JSX.Element {
   const [playVideo, setPlayVideo] = useState<boolean>(false);
   const [cardMouseOver, setCardMouseOver] = useState<boolean>(false);
 
@@ -33,11 +33,11 @@ function Card({id, name, previewImage, previewVideoLink}: CardProps): JSX.Elemen
       onMouseOver={() => setCardMouseOver(true)}
       onMouseLeave={() => setCardMouseOver(false)}
     >
-      <div className="small-film-card__image">
+      <Link to={AppRoute.Film.replace(':id', id.toString())} className="small-film-card__image" style={{ display: 'block' }}>
         {playVideo
           ? <VideoPlayer url={previewVideoLink} poster={previewImage} />
           : <img src={previewImage} alt={name} width="280" height="175" /> }
-      </div>
+      </Link>
       <h3 className="small-film-card__title">
         <Link to={AppRoute.Film.replace(':id', id.toString())} className="small-film-card__link">{name}</Link>
       </h3>
@@ -45,4 +45,4 @@ function Card({id, name, previewImage, previewVideoLink}: CardProps): JSX.Elemen
   );
 }
 
-export default Card;
+export default FilmCardSmall;

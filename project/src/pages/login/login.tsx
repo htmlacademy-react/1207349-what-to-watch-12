@@ -4,11 +4,12 @@ import { useAppSelector } from '../../hooks';
 import { AppRoute, AuthStatus } from '../../const';
 import UserPageLayout from '../../components/user-page-layout/user-page-layout';
 import LoginForm from '../../components/login-form/login-form';
+import { getAuthStatus } from '../../store/user-process/selectors';
 
 function Login(): JSX.Element {
   const navigate = useNavigate();
 
-  const isAuth = useAppSelector((state) => state.authorizationStatus === AuthStatus.Auth);
+  const isAuth = useAppSelector(getAuthStatus) === AuthStatus.Auth;
 
   useEffect(() => {
     if (isAuth) {

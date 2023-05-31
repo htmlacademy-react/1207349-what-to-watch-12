@@ -4,6 +4,8 @@ import { AppRoute, AuthStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
+import { getFilm } from '../../store/films-data/selectors';
+import { getAuthStatus } from '../../store/user-process/selectors';
 
 type HeaderProps = {
   className?: string;
@@ -15,8 +17,8 @@ function Header({className, title}: HeaderProps): JSX.Element {
 
   const location = useLocation();
 
-  const film = useAppSelector((state) => state.film);
-  const isAuth = useAppSelector((state) => state.authorizationStatus === AuthStatus.Auth);
+  const film = useAppSelector(getFilm);
+  const isAuth = useAppSelector(getAuthStatus) === AuthStatus.Auth;
 
   const isMyListPage = AppRoute.MyList === location.pathname;
   const isReviewPage = film && AppRoute.AddReview.replace(':id', film.id.toString()) === location.pathname;
@@ -42,9 +44,9 @@ function Header({className, title}: HeaderProps): JSX.Element {
       {isAuth ? (
         <ul className="user-block">
           <li className="user-block__item">
-            <div className="user-block__avatar">
+            <Link to={AppRoute.MyList} className="user-block__avatar" style={{ display: 'block' }}>
               <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-            </div>
+            </Link>
           </li>
           <li className="user-block__item">
             <Link

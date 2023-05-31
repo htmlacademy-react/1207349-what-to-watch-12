@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Film } from '../../types/films';
 import { AppRoute, AuthStatus } from '../../const';
 import { useAppSelector } from '../../hooks';
+import { getAuthStatus } from '../../store/user-process/selectors';
 
 type FilmInfoProps = {
   film: Film;
@@ -10,7 +11,7 @@ type FilmInfoProps = {
 function FilmInfo({film}: FilmInfoProps): JSX.Element {
   const location = useLocation();
 
-  const isAuth = useAppSelector((state) => state.authorizationStatus === AuthStatus.Auth);
+  const isAuth = useAppSelector(getAuthStatus) === AuthStatus.Auth;
 
   const isFilmPage = AppRoute.Film.replace(':id', film.id.toString()) === location.pathname;
 
