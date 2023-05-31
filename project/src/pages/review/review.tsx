@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import NotFound from '../not-found/not-found';
 import { fetchFilmAction } from '../../store/api-actions';
 import { useEffect } from 'react';
+import { getFilm } from '../../store/films-data/selectors';
 
 function Review(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -17,7 +18,7 @@ function Review(): JSX.Element {
     dispatch(fetchFilmAction(filmId));
   }, [dispatch, filmId]);
 
-  const film = useAppSelector((state) => state.film);
+  const film = useAppSelector(getFilm);
 
   if (film === null) {
     return <NotFound />;

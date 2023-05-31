@@ -9,13 +9,15 @@ import FilmBG from '../../components/film-bg/film-bg';
 import { useAppSelector } from '../../hooks';
 import MoreButton from '../../components/more-button/more-butten';
 import { useState } from 'react';
+import { getFilms } from '../../store/films-data/selectors';
+import { getGenre } from '../../store/films-process/selectors';
 
 
 function Main(): JSX.Element {
   const [showCount, setShowCount] = useState<number>(CARD_DISPLAY_COUNT);
 
-  const films = useAppSelector((state) => state.films);
-  const selectedGenre = useAppSelector((state) => state.genre);
+  const films = useAppSelector(getFilms);
+  const selectedGenre = useAppSelector(getGenre);
 
   const genres = [ALL_GENRES, ...new Set(films.map((film) => film.genre))];
 

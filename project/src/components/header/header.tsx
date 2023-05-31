@@ -4,6 +4,8 @@ import { AppRoute, AuthStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
+import { getFilm } from '../../store/films-data/selectors';
+import { getAuthStatus } from '../../store/user-process/selectors';
 
 type HeaderProps = {
   className?: string;
@@ -15,8 +17,8 @@ function Header({className, title}: HeaderProps): JSX.Element {
 
   const location = useLocation();
 
-  const film = useAppSelector((state) => state.film);
-  const isAuth = useAppSelector((state) => state.authorizationStatus === AuthStatus.Auth);
+  const film = useAppSelector(getFilm);
+  const isAuth = useAppSelector(getAuthStatus) === AuthStatus.Auth;
 
   const isMyListPage = AppRoute.MyList === location.pathname;
   const isReviewPage = film && AppRoute.AddReview.replace(':id', film.id.toString()) === location.pathname;

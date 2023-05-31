@@ -9,8 +9,9 @@ import FilmPoster from '../../components/film-poster/film-poster';
 import FilmBG from '../../components/film-bg/film-bg';
 import FilmTabs from '../../components/film-tabs/film-tabs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchFilmAction, fetchFilmReviewsAction, fetchFilmSimilarAction } from '../../store/api-actions';
+import { fetchFilmAction, fetchFilmReviewsAction, fetchSimilarFilmAction } from '../../store/api-actions';
 import { useEffect } from 'react';
+import { getFilm, getFilmReviews, getSimilarFilm } from '../../store/films-data/selectors';
 
 function Film(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -19,13 +20,16 @@ function Film(): JSX.Element {
 
   useEffect(() => {
     dispatch(fetchFilmAction(filmId));
-    dispatch(fetchFilmSimilarAction(filmId));
+    dispatch(fetchSimilarFilmAction(filmId));
     dispatch(fetchFilmReviewsAction(filmId));
   }, [dispatch, filmId]);
 
-  const film = useAppSelector((state) => state.film);
-  const filmSimilar = useAppSelector((state) => state.filmSimilar);
-  const filmReviews = useAppSelector((state) => state.filmReviews);
+  const film = useAppSelector(getFilm);
+  const similarFilm = useAppSelector(getSimilarFilm);
+  const filmReviews = useAppSelector(getFilmReviews);
+
+  // eslint-disable-next-line no-console
+  console.log(film);
 
   if (film === null) {
     return <NotFound />;
@@ -66,7 +70,7 @@ function Film(): JSX.Element {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <Catalog films={filmSimilar.slice(0, RELATED_DISPLAY_COUNT)} />
+          <Catalog films={similarFilm.slice(0, RELATED_DISPLAY_COUNT)} />
 
         </section>
 

@@ -10,9 +10,10 @@ import Player from '../../pages/player/player';
 import NotFound from '../../pages/not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
 import Loading from '../../pages/loading/loading';
+import { getFilmsDataLoadingStatus } from '../../store/films-data/selectors';
 
 function App(): JSX.Element {
-  const isFilmsDataLoading = useAppSelector((state) => state.isFilmsDataLoading);
+  const isFilmsDataLoading = useAppSelector(getFilmsDataLoadingStatus);
 
   if (isFilmsDataLoading) {
     return (
