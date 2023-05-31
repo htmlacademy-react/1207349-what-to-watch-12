@@ -33,11 +33,11 @@ function FilmCardSmall({id, name, previewImage, previewVideoLink}: FilmCardSmall
       onMouseOver={() => setCardMouseOver(true)}
       onMouseLeave={() => setCardMouseOver(false)}
     >
-      <div className="small-film-card__image">
+      <Link to={AppRoute.Film.replace(':id', id.toString())} className="small-film-card__image" style={{ display: 'block' }}>
         {playVideo
           ? <VideoPlayer url={previewVideoLink} poster={previewImage} />
           : <img src={previewImage} alt={name} width="280" height="175" /> }
-      </div>
+      </Link>
       <h3 className="small-film-card__title">
         <Link to={AppRoute.Film.replace(':id', id.toString())} className="small-film-card__link">{name}</Link>
       </h3>
