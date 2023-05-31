@@ -5,7 +5,7 @@ import { films } from '../../mocks/films';
 
 function MyList(): JSX.Element {
   return (
-    <UserPageLayout title='My list'>
+    <UserPageLayout title="My list">
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
         <Catalog films={films.slice(0, CARD_DISPLAY_COUNT)} />
