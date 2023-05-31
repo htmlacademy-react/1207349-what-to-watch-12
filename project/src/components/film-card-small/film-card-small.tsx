@@ -3,14 +3,14 @@ import { AppRoute } from '../../const';
 import VideoPlayer from '../video-player/video-player';
 import { useEffect, useState } from 'react';
 
-type CardProps = {
+type FilmCardSmallProps = {
   id: number;
   name: string;
   previewImage: string;
   previewVideoLink: string;
 }
 
-function Card({id, name, previewImage, previewVideoLink}: CardProps): JSX.Element {
+function FilmCardSmall({id, name, previewImage, previewVideoLink}: FilmCardSmallProps): JSX.Element {
   const [playVideo, setPlayVideo] = useState<boolean>(false);
   const [cardMouseOver, setCardMouseOver] = useState<boolean>(false);
 
@@ -45,4 +45,4 @@ function Card({id, name, previewImage, previewVideoLink}: CardProps): JSX.Elemen
   );
 }
 
-export default Card;
+export default FilmCardSmall;

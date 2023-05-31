@@ -1,5 +1,5 @@
 import { Films } from '../../types/films';
-import Card from '../card/card';
+import FilmCardSmall from '../film-card-small/film-card-small';
 
 type CatalogProps = {
   films: Films;
@@ -9,7 +9,7 @@ function Catalog({films}: CatalogProps): JSX.Element {
   return (
     <div className="catalog__films-list">
       {films.map((film) => (
-        <Card
+        <FilmCardSmall
           key={film.id}
           id={film.id}
           name={film.name}
