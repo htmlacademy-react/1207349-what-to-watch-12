@@ -5,14 +5,14 @@ import FilmDetails from '../film-details/film-details';
 import { Film } from '../../types/films';
 import { Tab } from '../../const';
 import TabLink from '../tab-link/tab-link';
-import { Comments } from '../../types/comments';
+import { Reviews } from '../../types/reviews';
 
 type FilmTabsProps = {
   film: Film;
-  comments: Comments;
+  reviews: Reviews;
 }
 
-function FilmTabs({film, comments}: FilmTabsProps): JSX.Element {
+function FilmTabs({film, reviews}: FilmTabsProps): JSX.Element {
   const [activeTab, setActiveTab] = useState<string>(Tab.Overview);
 
   return (
@@ -37,7 +37,7 @@ function FilmTabs({film, comments}: FilmTabsProps): JSX.Element {
           case Tab.Details:
             return <FilmDetails film={film} />;
           case Tab.Reviews:
-            return <FilmReviews comments={comments} />;
+            return <FilmReviews reviews={reviews} />;
         }
       }()}
     </div>

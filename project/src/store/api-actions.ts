@@ -1,12 +1,12 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.js';
-import { loadFilm, loadFilmComments, loadFilmSimilar, loadFilms, loadUser, publishFilmReview, redirectToRoute, requireAuthorization, setFilmsDataLoadingStatus } from './actions';
+import { loadFilm, loadFilmReviews, loadFilmSimilar, loadFilms, loadUser, publishFilmReview, redirectToRoute, requireAuthorization, setFilmsDataLoadingStatus } from './actions';
 import { APIRoute, AppRoute, AuthStatus } from '../const';
 import { Film, Films } from '../types/films';
 import { AuthData, ReviewData, UserData } from '../types/data';
 import { dropToken, saveToken } from '../services/token';
-import { Comments } from '../types/comments.js';
+import { Reviews } from '../types/reviews.js';
 
 function createAsyncThunkTeamplate<ThunkArg = undefined>() {
   return createAsyncThunk<void, ThunkArg, {
@@ -42,18 +42,18 @@ export const fetchFilmSimilarAction = createAsyncThunkTeamplate<number>()(
   },
 );
 
-export const fetchFilmCommentsAction = createAsyncThunkTeamplate<number>()(
-  'data/loadFilmComments',
+export const fetchFilmReviewsAction = createAsyncThunkTeamplate<number>()(
+  'data/loadFilmReviews',
   async (filmId, {dispatch, extra: api}) => {
-    const {data} = await api.get<Comments>(APIRoute.Comments.replace('{filmId}', filmId.toString()));
-    dispatch(loadFilmComments(data));
+    const {data} = await api.get<Reviews>(APIRoute.Reviews.replace('{filmId}', filmId.toString()));
+    dispatch(loadFilmReviews(data));
   },
 );
 
 export const publishFilmReviewAction = createAsyncThunkTeamplate<ReviewData>()(
   'data/publishFilmReview',
   async ({rating, comment, filmId}, {dispatch, extra: api}) => {
-    const {data} = await api.post<Comments>(APIRoute.Comments.replace('{filmId}', filmId.toString()), {rating, comment});
+    const {data} = await api.post<Reviews>(APIRoute.Reviews.replace('{filmId}', filmId.toString()), {rating, comment});
     dispatch(publishFilmReview(data));
   },
 );

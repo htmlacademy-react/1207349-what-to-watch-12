@@ -1,11 +1,11 @@
 import { format } from 'date-fns';
-import { Comment } from '../../types/comments';
+import { Review } from '../../types/reviews';
 
 type ReviewProps = {
-  review: Comment;
+  review: Review;
 }
 
-function Review({review}: ReviewProps): JSX.Element {
+function FilmReview({review}: ReviewProps): JSX.Element {
   const {comment, date, rating, user} = review;
   const dateObj = new Date(date);
 
@@ -25,4 +25,4 @@ function Review({review}: ReviewProps): JSX.Element {
   );
 }
 
-export default Review;
+export default FilmReview;

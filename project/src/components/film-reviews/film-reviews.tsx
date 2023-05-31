@@ -1,22 +1,22 @@
-import { Comments } from '../../types/comments';
-import Review from '../review/review';
+import { Reviews } from '../../types/reviews';
+import Review from '../film-review/film-review';
 
 type FilmReviewsProps = {
-  comments: Comments;
+  reviews: Reviews;
 }
 
-function FilmReviews({comments}: FilmReviewsProps): JSX.Element {
-  const indexToSplit = Math.ceil(comments.length / 2);
-  const firstColComments = comments.slice(0, indexToSplit);
-  const secondColComments = comments.slice(indexToSplit);
+function FilmReviews({reviews}: FilmReviewsProps): JSX.Element {
+  const indexToSplit = Math.ceil(reviews.length / 2);
+  const firstColReviews = reviews.slice(0, indexToSplit);
+  const secondColReviews = reviews.slice(indexToSplit);
 
   return (
     <div className="film-card__reviews film-card__row">
       <div className="film-card__reviews-col">
-        {firstColComments.map((item) => <Review key={item.id} review={item} />)}
+        {firstColReviews.map((item) => <Review key={item.id} review={item} />)}
       </div>
       <div className="film-card__reviews-col">
-        {secondColComments.map((item) => <Review key={item.id} review={item} />)}
+        {secondColReviews.map((item) => <Review key={item.id} review={item} />)}
       </div>
     </div>
   );

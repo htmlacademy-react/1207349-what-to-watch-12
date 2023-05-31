@@ -9,7 +9,7 @@ import FilmPoster from '../../components/film-poster/film-poster';
 import FilmBG from '../../components/film-bg/film-bg';
 import FilmTabs from '../../components/film-tabs/film-tabs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchFilmAction, fetchFilmCommentsAction, fetchFilmSimilarAction } from '../../store/api-actions';
+import { fetchFilmAction, fetchFilmReviewsAction, fetchFilmSimilarAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 
 function Film(): JSX.Element {
@@ -20,12 +20,12 @@ function Film(): JSX.Element {
   useEffect(() => {
     dispatch(fetchFilmAction(filmId));
     dispatch(fetchFilmSimilarAction(filmId));
-    dispatch(fetchFilmCommentsAction(filmId));
+    dispatch(fetchFilmReviewsAction(filmId));
   }, [dispatch, filmId]);
 
   const film = useAppSelector((state) => state.film);
   const filmSimilar = useAppSelector((state) => state.filmSimilar);
-  const filmComments = useAppSelector((state) => state.filmComments);
+  const filmReviews = useAppSelector((state) => state.filmReviews);
 
   if (film === null) {
     return <NotFound />;
@@ -56,7 +56,7 @@ function Film(): JSX.Element {
               className='film-card__poster--big'
             />
 
-            <FilmTabs film={film} comments={filmComments} />
+            <FilmTabs film={film} reviews={filmReviews} />
 
           </div>
         </div>
