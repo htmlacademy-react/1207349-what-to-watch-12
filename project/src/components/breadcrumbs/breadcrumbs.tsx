@@ -12,7 +12,7 @@ function Breadcrumbs({filmName, filmId}: BreadcrumbsProps): JSX.Element {
       <ul className="breadcrumbs__list">
         <li className="breadcrumbs__item">
           <Link
-            to={AppRoute.Film.replace('{filmId}', filmId.toString())}
+            to={AppRoute.Film.replace(':id', filmId.toString())}
             className="breadcrumbs__link"
           >
             {filmName}
@@ -20,7 +20,7 @@ function Breadcrumbs({filmName, filmId}: BreadcrumbsProps): JSX.Element {
         </li>
         <li className="breadcrumbs__item">
           <Link
-            to={AppRoute.AddReview.replace('{filmId}', filmId.toString())}
+            to={AppRoute.AddReview.replace(':id', filmId.toString())}
             className="breadcrumbs__link"
           >
             Add review
