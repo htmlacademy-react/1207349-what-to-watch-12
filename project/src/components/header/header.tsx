@@ -19,6 +19,7 @@ function Header({className, title}: HeaderProps): JSX.Element {
   const isAuth = useAppSelector((state) => state.authorizationStatus === AuthStatus.Auth);
 
   const isMyListPage = AppRoute.MyList === location.pathname;
+  const isReviewPage = film && AppRoute.AddReview.replace(':id', film.id.toString()) === location.pathname;
 
   return (
     <header className={classNames('page-header', className)}>
@@ -36,7 +37,7 @@ function Header({className, title}: HeaderProps): JSX.Element {
           {isMyListPage && <span className="user-page__film-count">9</span>}
         </h1>}
 
-      {film && <Breadcrumbs filmName={film.name} filmId={film.id} />}
+      {isReviewPage && <Breadcrumbs filmName={film.name} filmId={film.id} />}
 
       {isAuth ? (
         <ul className="user-block">
