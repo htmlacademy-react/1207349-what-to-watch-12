@@ -28,9 +28,6 @@ function Film(): JSX.Element {
   const similarFilm = useAppSelector(getSimilarFilm);
   const filmReviews = useAppSelector(getFilmReviews);
 
-  // eslint-disable-next-line no-console
-  console.log(film);
-
   if (film === null) {
     return <NotFound />;
   }
