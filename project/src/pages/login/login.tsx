@@ -1,11 +1,10 @@
-import { useNavigate } from 'react-router-dom';
-import Header from '../../components/header/header';
-import Layout from '../../components/layout/layout';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { AppRoute, AuthStatus } from '../../const';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AuthData } from '../../types/data';
+import { AppRoute, AuthStatus } from '../../const';
 import { loginAction } from '../../store/api-actions';
+import UserPageLayout from '../../components/user-page-layout/user-page-layout';
 
 function Login(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -42,10 +41,7 @@ function Login(): JSX.Element {
   };
 
   return (
-    <Layout >
-
-      <Header className="user-page__head" title='Sign in' />
-
+    <UserPageLayout title="Sign in">
       <div className="sign-in user-page__content">
         <form action="#" className="sign-in__form" onSubmit={formSubmitHandler}>
           <div className="sign-in__fields">
@@ -80,8 +76,7 @@ function Login(): JSX.Element {
           </div>
         </form>
       </div>
-
-    </Layout>
+    </UserPageLayout>
   );
 }
 
