@@ -44,9 +44,9 @@ function Header({className, title}: HeaderProps): JSX.Element {
       {isAuth ? (
         <ul className="user-block">
           <li className="user-block__item">
-            <div className="user-block__avatar">
+            <Link to={AppRoute.MyList} className="user-block__avatar" style={{ display: 'block' }}>
               <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-            </div>
+            </Link>
           </li>
           <li className="user-block__item">
             <Link
