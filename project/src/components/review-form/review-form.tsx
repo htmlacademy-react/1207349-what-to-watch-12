@@ -1,11 +1,19 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import RatingInput from '../rating-input/rating-input';
 import { RATING_INPUT_COUNT } from '../../const';
+import { publishFilmReviewAction } from '../../store/api-actions';
+import { useAppDispatch } from '../../hooks';
 
-function ReviewForm(): JSX.Element {
+type ReviewFormProps = {
+  filmId: number;
+}
+
+function ReviewForm({filmId}: ReviewFormProps): JSX.Element {
+  const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({
     rating: 0,
     comment: '',
+    filmId: filmId,
   });
 
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -13,8 +21,18 @@ function ReviewForm(): JSX.Element {
     setFormData({...formData, [name]: value});
   };
 
+  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    dispatch(publishFilmReviewAction(formData));
+    setFormData({
+      rating: 0,
+      comment: '',
+      filmId: filmId,
+    });
+  };
+
   return (
-    <form action="#" className="add-review__form">
+    <form action="#" className="add-review__form" onSubmit={handleFormSubmit}>
       <div className="rating">
         <div className="rating__stars">
           {[...Array(RATING_INPUT_COUNT).keys()].map((title, i, arr) => (

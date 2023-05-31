@@ -1,10 +1,10 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.js';
-import { loadFilm, loadFilmComments, loadFilmSimilar, loadFilms, loadUser, redirectToRoute, requireAuthorization, setFilmsDataLoadingStatus } from './actions';
+import { loadFilm, loadFilmComments, loadFilmSimilar, loadFilms, loadUser, publishFilmReview, redirectToRoute, requireAuthorization, setFilmsDataLoadingStatus } from './actions';
 import { APIRoute, AppRoute, AuthStatus } from '../const';
 import { Film, Films } from '../types/films';
-import { AuthData, UserData } from '../types/data';
+import { AuthData, ReviewData, UserData } from '../types/data';
 import { dropToken, saveToken } from '../services/token';
 import { Comments } from '../types/comments.js';
 
@@ -47,6 +47,14 @@ export const fetchFilmCommentsAction = createAsyncThunkTeamplate<number>()(
   async (filmId, {dispatch, extra: api}) => {
     const {data} = await api.get<Comments>(APIRoute.Comments.replace('{filmId}', filmId.toString()));
     dispatch(loadFilmComments(data));
+  },
+);
+
+export const publishFilmReviewAction = createAsyncThunkTeamplate<ReviewData>()(
+  'data/publishFilmReview',
+  async ({rating, comment, filmId}, {dispatch, extra: api}) => {
+    const {data} = await api.post<Comments>(APIRoute.Comments.replace('{filmId}', filmId.toString()), {rating, comment});
+    dispatch(publishFilmReview(data));
   },
 );
 
