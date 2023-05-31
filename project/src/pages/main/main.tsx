@@ -1,6 +1,5 @@
 import { ALL_GENRES, CARD_DISPLAY_COUNT, GENRE_DISPLAY_COUNT } from '../../const';
 import Header from '../../components/header/header';
-import Footer from '../../components/footer/footer';
 import Catalog from '../../components/catalog/catalog';
 import Genres from '../../components/genres/genres';
 import FilmInfo from '../../components/film-info/film-info';
@@ -11,6 +10,7 @@ import MoreButton from '../../components/more-button/more-butten';
 import { useState } from 'react';
 import { getFilms } from '../../store/films-data/selectors';
 import { getGenre } from '../../store/films-process/selectors';
+import PageContentLayout from '../../components/page-content-layout/page-content-layout';
 
 
 function Main(): JSX.Element {
@@ -46,23 +46,18 @@ function Main(): JSX.Element {
         </div>
       </section>
 
-      <div className="page-content">
-        <section className="catalog">
-          <h2 className="catalog__title visually-hidden">Catalog</h2>
+      <PageContentLayout title="Catalog" hideTitle>
 
-          <Genres genres={genres.slice(0, GENRE_DISPLAY_COUNT)} selectedGenre={selectedGenre} />
+        <Genres genres={genres.slice(0, GENRE_DISPLAY_COUNT)} selectedGenre={selectedGenre} />
 
-          <Catalog films={filmsByGenre.slice(0, showCount)} />
+        <Catalog films={filmsByGenre.slice(0, showCount)} />
 
-          {filmsByGenre.length > showCount && (
-            <MoreButton showCount={showCount} setShowCount={setShowCount} />
-          )}
+        {filmsByGenre.length > showCount && (
+          <MoreButton showCount={showCount} setShowCount={setShowCount} />
+        )}
 
-        </section>
+      </PageContentLayout>
 
-        <Footer />
-
-      </div>
     </>
   );
 }

@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import NotFound from '../not-found/not-found';
 import Header from '../../components/header/header';
-import Footer from '../../components/footer/footer';
 import FilmInfo from '../../components/film-info/film-info';
 import Catalog from '../../components/catalog/catalog';
 import { RELATED_DISPLAY_COUNT } from '../../const';
@@ -12,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilmAction, fetchFilmReviewsAction, fetchSimilarFilmAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { getFilm, getFilmReviews, getSimilarFilm } from '../../store/films-data/selectors';
+import PageContentLayout from '../../components/page-content-layout/page-content-layout';
 
 function Film(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -63,17 +63,12 @@ function Film(): JSX.Element {
         </div>
       </section>
 
-      <div className="page-content">
-        <section className="catalog catalog--like-this">
-          <h2 className="catalog__title">More like this</h2>
+      <PageContentLayout title="More like this" className="catalog--like-this">
 
-          <Catalog films={similarFilm.slice(0, RELATED_DISPLAY_COUNT)} />
+        <Catalog films={similarFilm.slice(0, RELATED_DISPLAY_COUNT)} />
 
-        </section>
+      </PageContentLayout>
 
-        <Footer />
-
-      </div>
     </>
   );
 }
