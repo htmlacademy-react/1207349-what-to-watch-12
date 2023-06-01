@@ -1,14 +1,16 @@
 import Catalog from '../../components/catalog/catalog';
 import UserPageLayout from '../../components/user-page-layout/user-page-layout';
-import { CARD_DISPLAY_COUNT } from '../../const';
-import { films } from '../../mocks/films';
+import { useAppSelector } from '../../hooks';
+import { getFavoriteFilms } from '../../store/films-data/selectors';
 
 function MyList(): JSX.Element {
+  const films = useAppSelector(getFavoriteFilms);
+
   return (
     <UserPageLayout title="My list">
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
-        <Catalog films={films.slice(0, CARD_DISPLAY_COUNT)} />
+        <Catalog films={films} />
       </section>
     </UserPageLayout>
   );

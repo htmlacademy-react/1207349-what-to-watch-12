@@ -4,7 +4,7 @@ import { AppDispatch, State } from '../types/state.js';
 import { redirectToRoute } from './actions';
 import { APIRoute, AppRoute } from '../const';
 import { Film, Films } from '../types/films';
-import { AuthData, ReviewData, UserData } from '../types/data';
+import { AuthData, FavoriteFilmData, ReviewData, UserData } from '../types/data';
 import { dropToken, saveToken } from '../services/token';
 import { Reviews } from '../types/reviews.js';
 
@@ -52,6 +52,29 @@ export const fetchSimilarFilmAction = createAsyncThunkTeamplate<Films, number>()
   },
 );
 
+export const fetchFavoriteFilmsAction = createAsyncThunkTeamplate<Films>()(
+  'data/loadFavoriteFilms',
+  async (_, {extra: api}) => {
+    const {data} = await api.get<Films>(APIRoute.Favorite);
+
+    return data;
+  },
+);
+
+export const changeFavoriteFilmStatusAction = createAsyncThunkTeamplate<Film, FavoriteFilmData>()(
+  'data/changeFavoriteFilmStatus',
+  async ({filmId, status}, {dispatch, extra: api}) => {
+    const {data} = await api.post<Film>(
+      APIRoute.FavoriteStatus
+        .replace('{filmId}', filmId.toString())
+        .replace('{status}', status.toString())
+    );
+    dispatch(fetchFavoriteFilmsAction());
+
+    return data;
+  },
+);
+
 export const fetchFilmReviewsAction = createAsyncThunkTeamplate<Reviews, number>()(
   'data/loadFilmReviews',
   async (filmId, {extra: api}) => {
@@ -64,7 +87,10 @@ export const fetchFilmReviewsAction = createAsyncThunkTeamplate<Reviews, number>
 export const publishFilmReviewAction = createAsyncThunkTeamplate<Reviews, ReviewData>()(
   'data/publishFilmReview',
   async ({rating, comment, filmId}, {extra: api}) => {
-    const {data} = await api.post<Reviews>(APIRoute.Reviews.replace('{filmId}', filmId.toString()), {rating, comment});
+    const {data} = await api.post<Reviews>(
+      APIRoute.Reviews.replace('{filmId}', filmId.toString()),
+      {rating, comment}
+    );
 
     return data;
   },

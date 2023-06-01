@@ -1,8 +1,10 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Film } from '../../types/films';
 import { AppRoute, AuthStatus } from '../../const';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getAuthStatus } from '../../store/user-process/selectors';
+import { getFavoriteFilms } from '../../store/films-data/selectors';
+import { changeFavoriteFilmStatusAction } from '../../store/api-actions';
 
 type FilmInfoProps = {
   film: Film;
@@ -10,11 +12,26 @@ type FilmInfoProps = {
 
 function FilmInfo({film}: FilmInfoProps): JSX.Element {
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const isAuth = useAppSelector(getAuthStatus) === AuthStatus.Auth;
 
   const isFilmPage = AppRoute.Film.replace(':id', film.id.toString()) === location.pathname;
 
+  const favoriteFilms = useAppSelector(getFavoriteFilms);
+  const isFavorite = favoriteFilms.some((element) => element.id === film.id);
+
+  const handleMyListClick = () => {
+    if (isAuth) {
+      dispatch(changeFavoriteFilmStatusAction({
+        filmId: film.id,
+        status: Number(!isFavorite),
+      }));
+    } else {
+      navigate(AppRoute.SignIn);
+    }
+  };
 
   return (
     <div className="film-card__desc">
@@ -30,14 +47,17 @@ function FilmInfo({film}: FilmInfoProps): JSX.Element {
           </svg>
           <span>Play</span>
         </Link>
-        {isAuth &&
-          <button className="btn btn--list film-card__button" type="button">
+        <button className="btn btn--list film-card__button" type="button" onClick={handleMyListClick}>
+          {isFavorite ?
+            <svg viewBox="0 0 18 14" width="18" height="14">
+              <use xlinkHref="#in-list"></use>
+            </svg> :
             <svg viewBox="0 0 19 20" width="19" height="20">
               <use xlinkHref="#add"></use>
-            </svg>
-            <span>My list</span>
-            <span className="film-card__count">9</span>
-          </button>}
+            </svg>}
+          <span>My list</span>
+          {favoriteFilms.length > 0 && <span className="film-card__count">{favoriteFilms.length}</span>}
+        </button>
         {isFilmPage && isAuth &&
           <Link
             to={AppRoute.AddReview.replace(':id', film.id.toString())}
