@@ -14,3 +14,8 @@ export type ReviewData = {
   comment: string;
   filmId: number;
 }
+
+export type FavoriteFilmData = {
+  filmId: number;
+  status: number;
+}

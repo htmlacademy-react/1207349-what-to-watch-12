@@ -14,6 +14,7 @@ export type FilmsData = {
   film: Film | null;
   promoFilm: Film | null;
   similarFilms: Films;
+  favoriteFilms: Films;
   filmReviews: Reviews;
   isFilmsDataLoading: boolean;
   reviewsPublishStatus: RequestStatus;

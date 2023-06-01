@@ -4,7 +4,7 @@ import { AppRoute, AuthStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
-import { getFilm } from '../../store/films-data/selectors';
+import { getFavoriteFilms, getFilm } from '../../store/films-data/selectors';
 import { getAuthStatus } from '../../store/user-process/selectors';
 
 type HeaderProps = {
@@ -14,11 +14,11 @@ type HeaderProps = {
 
 function Header({className, title}: HeaderProps): JSX.Element {
   const dispatch = useAppDispatch();
-
   const location = useLocation();
 
   const film = useAppSelector(getFilm);
   const isAuth = useAppSelector(getAuthStatus) === AuthStatus.Auth;
+  const favoriteFilmsCount = useAppSelector(getFavoriteFilms).length;
 
   const isMyListPage = AppRoute.MyList === location.pathname;
   const isReviewPage = film && AppRoute.AddReview.replace(':id', film.id.toString()) === location.pathname;
@@ -36,7 +36,7 @@ function Header({className, title}: HeaderProps): JSX.Element {
       {title &&
         <h1 className="page-title user-page__title">
           {title}
-          {isMyListPage && <span className="user-page__film-count">9</span>}
+          {isMyListPage && favoriteFilmsCount > 0 && <span className="user-page__film-count">{favoriteFilmsCount}</span>}
         </h1>}
 
       {isReviewPage && <Breadcrumbs filmName={film.name} filmId={film.id} />}
