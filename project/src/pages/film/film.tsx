@@ -3,7 +3,7 @@ import NotFound from '../not-found/not-found';
 import Catalog from '../../components/catalog/catalog';
 import { RELATED_DISPLAY_COUNT } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchFilmAction, fetchFilmReviewsAction, fetchSimilarFilmAction } from '../../store/api-actions';
+import { fetchFilmAction, fetchFilmReviewsAction, fetchSimilarFilmsAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { getFilm, getFilmReviews, getSimilarFilm } from '../../store/films-data/selectors';
 import PageContentLayout from '../../components/page-content-layout/page-content-layout';
@@ -16,7 +16,7 @@ function Film(): JSX.Element {
 
   useEffect(() => {
     dispatch(fetchFilmAction(filmId));
-    dispatch(fetchSimilarFilmAction(filmId));
+    dispatch(fetchSimilarFilmsAction(filmId));
     dispatch(fetchFilmReviewsAction(filmId));
   }, [dispatch, filmId]);
 

@@ -43,8 +43,8 @@ export const fetchPromoFilmAction = createAsyncThunkTeamplate<Film>()(
   },
 );
 
-export const fetchSimilarFilmAction = createAsyncThunkTeamplate<Films, number>()(
-  'data/loadSimilarFilm',
+export const fetchSimilarFilmsAction = createAsyncThunkTeamplate<Films, number>()(
+  'data/loadSimilarFilms',
   async (filmId, {extra: api}) => {
     const {data} = await api.get<Films>(APIRoute.SimilarFilm.replace('{filmId}', filmId.toString()));
 

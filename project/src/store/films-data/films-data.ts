@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace, RequestStatus } from '../../const';
 import { FilmsData } from '../../types/state';
-import { fetchFilmReviewsAction, fetchSimilarFilmAction, fetchFilmsAction, publishFilmReviewAction, fetchFilmAction, fetchPromoFilmAction, fetchFavoriteFilmsAction } from '../api-actions';
+import { fetchFilmReviewsAction, fetchSimilarFilmsAction, fetchFilmsAction, publishFilmReviewAction, fetchFilmAction, fetchPromoFilmAction, fetchFavoriteFilmsAction } from '../api-actions';
 
 const initialState: FilmsData = {
   films: [],
@@ -37,7 +37,7 @@ export const filmsData = createSlice({
       .addCase(fetchPromoFilmAction.fulfilled, (state, action) => {
         state.promoFilm = action.payload;
       })
-      .addCase(fetchSimilarFilmAction.fulfilled, (state, action) => {
+      .addCase(fetchSimilarFilmsAction.fulfilled, (state, action) => {
         state.similarFilms = action.payload;
       })
       .addCase(fetchFavoriteFilmsAction.fulfilled, (state, action) => {
