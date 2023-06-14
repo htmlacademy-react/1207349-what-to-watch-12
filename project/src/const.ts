@@ -49,3 +49,8 @@ export enum RequestStatus {
   Fulfilled = 'FULFILLED',
   Rejected = 'REJECTED',
 }
+
+export enum CommentLength {
+  Min = 50,
+  Max = 300,
+}

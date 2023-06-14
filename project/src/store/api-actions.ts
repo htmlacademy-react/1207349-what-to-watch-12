@@ -86,11 +86,12 @@ export const fetchFilmReviewsAction = createAsyncThunkTeamplate<Reviews, number>
 
 export const publishFilmReviewAction = createAsyncThunkTeamplate<Reviews, ReviewData>()(
   'data/publishFilmReview',
-  async ({rating, comment, filmId}, {extra: api}) => {
+  async ({rating, comment, filmId}, {dispatch, extra: api}) => {
     const {data} = await api.post<Reviews>(
       APIRoute.Reviews.replace('{filmId}', filmId.toString()),
       {rating, comment}
     );
+    dispatch(redirectToRoute(AppRoute.Film.replace(':id', filmId.toString())));
 
     return data;
   },

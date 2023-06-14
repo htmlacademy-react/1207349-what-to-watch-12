@@ -7,7 +7,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import NotFound from '../not-found/not-found';
 import { fetchFilmAction } from '../../store/api-actions';
 import { useEffect } from 'react';
-import { getFilm } from '../../store/films-data/selectors';
+import { getFilm, getLoadingStatus } from '../../store/films-data/selectors';
+import Loading from '../loading/loading';
 
 function Review(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -19,6 +20,11 @@ function Review(): JSX.Element {
   }, [dispatch, filmId]);
 
   const film = useAppSelector(getFilm);
+  const isLoading = useAppSelector(getLoadingStatus);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   if (film === null) {
     return <NotFound />;

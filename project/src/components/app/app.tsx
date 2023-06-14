@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { useAppSelector } from '../../hooks';
 import Main from '../../pages/main/main';
 import Login from '../../pages/login/login';
 import MyList from '../../pages/my-list/my-list';
@@ -9,18 +8,8 @@ import Review from '../../pages/review/review';
 import Player from '../../pages/player/player';
 import NotFound from '../../pages/not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
-import Loading from '../../pages/loading/loading';
-import { getFilmsDataLoadingStatus } from '../../store/films-data/selectors';
 
 function App(): JSX.Element {
-  const isFilmsDataLoading = useAppSelector(getFilmsDataLoadingStatus);
-
-  if (isFilmsDataLoading) {
-    return (
-      <Loading />
-    );
-  }
-
   return (
     <BrowserRouter>
       <Routes>

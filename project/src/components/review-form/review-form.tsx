@@ -1,8 +1,9 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import RatingInput from '../rating-input/rating-input';
-import { RATING_INPUT_COUNT } from '../../const';
+import { CommentLength, RATING_INPUT_COUNT, RequestStatus } from '../../const';
 import { publishFilmReviewAction } from '../../store/api-actions';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getReviewsPublishStatus } from '../../store/films-data/selectors';
 
 type ReviewFormProps = {
   filmId: number;
@@ -10,6 +11,8 @@ type ReviewFormProps = {
 
 function ReviewForm({filmId}: ReviewFormProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const publishReviewsStatus = useAppSelector(getReviewsPublishStatus);
+
   const [formData, setFormData] = useState({
     rating: 0,
     comment: '',
@@ -18,6 +21,13 @@ function ReviewForm({filmId}: ReviewFormProps): JSX.Element {
 
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const {name, value} = evt.target;
+
+    if (name === 'comment' && (value.length < CommentLength.Min || value.length > CommentLength.Max)) {
+      evt.target.setCustomValidity('The text of the review must be at least 50 and no more than 400 characters.');
+    } else {
+      evt.target.setCustomValidity('');
+    }
+
     setFormData({...formData, [name]: value});
   };
 
@@ -55,7 +65,18 @@ function ReviewForm({filmId}: ReviewFormProps): JSX.Element {
           onChange={handleInputChange}
         />
         <div className="add-review__submit">
-          <button className="add-review__btn" type="submit">Post</button>
+          <button
+            className="add-review__btn"
+            type="submit"
+            disabled={
+              publishReviewsStatus === RequestStatus.Pending ||
+              formData.rating === 0 ||
+              formData.comment.length < CommentLength.Min ||
+              formData.comment.length > CommentLength.Max
+            }
+          >
+            {publishReviewsStatus === RequestStatus.Pending ? 'Loading' : 'Post'}
+          </button>
         </div>
       </div>
     </form>

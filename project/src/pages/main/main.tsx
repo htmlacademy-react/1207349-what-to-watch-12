@@ -8,6 +8,8 @@ import { getFilms, getPromoFilm } from '../../store/films-data/selectors';
 import { getGenre } from '../../store/films-process/selectors';
 import PageContentLayout from '../../components/page-content-layout/page-content-layout';
 import FilmCardPromo from '../../components/film-card-promo/film-card-promo';
+import Loading from '../../pages/loading/loading';
+import { getLoadingStatus } from '../../store/films-data/selectors';
 
 
 function Main(): JSX.Element {
@@ -20,6 +22,12 @@ function Main(): JSX.Element {
   const genres = [ALL_GENRES, ...new Set(films.map((film) => film.genre))];
 
   const filmsByGenre = selectedGenre === ALL_GENRES ? films : films.filter((film) => film.genre === selectedGenre);
+
+  const isLoading = useAppSelector(getLoadingStatus);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
