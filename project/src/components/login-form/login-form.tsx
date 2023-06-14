@@ -2,9 +2,12 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { AuthData } from '../../types/data';
 import { loginAction } from '../../store/api-actions';
+import classNames from 'classnames';
 
 function LoginForm(): JSX.Element {
   const dispatch = useAppDispatch();
+  const [isValid, setIsValid] = useState({login: true, password: true});
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [formData, setFormData] = useState<AuthData>({
     login: '',
@@ -13,25 +16,30 @@ function LoginForm(): JSX.Element {
 
   const hanldeFieldChange = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const {name, value} = evt.target;
-
-    if (name === 'password' && !/^(?=.*[a-zA-Z])(?=.*\d)(?=.{1,}$)/.test(value)) {
-      evt.target.setCustomValidity('Пароль должен состоять минимум из одной буквы и цифры.');
-    } else {
-      evt.target.setCustomValidity('');
-    }
-
     setFormData({...formData, [name]: value});
   };
 
   const hanldeFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    dispatch(loginAction(formData));
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.login)) {
+      setErrorMessage('Please enter a valid email address');
+      setIsValid({login: false, password: true});
+    } else if (!/^(?=.*[a-zA-Z])(?=.*\d)(?=.{1,}$)/.test(formData.password)) {
+      setErrorMessage('The password must consist of at least one letter and a number.');
+      setIsValid({login: true, password: false});
+    } else {
+      dispatch(loginAction(formData));
+    }
   };
 
   return (
     <form action="#" className="sign-in__form" onSubmit={hanldeFormSubmit}>
+      {errorMessage &&
+        <div className="sign-in__message">
+          <p>{errorMessage}</p>
+        </div>}
       <div className="sign-in__fields">
-        <div className="sign-in__field">
+        <div className={classNames('sign-in__field', {'sign-in__field--error': !isValid.login})}>
           <input
             onChange={hanldeFieldChange}
             value={formData.login}
@@ -43,7 +51,7 @@ function LoginForm(): JSX.Element {
           />
           <label className="sign-in__label visually-hidden" htmlFor="user-email">Email address</label>
         </div>
-        <div className="sign-in__field">
+        <div className={classNames('sign-in__field', {'sign-in__field--error': !isValid.password})}>
           <input
             onChange={hanldeFieldChange}
             value={formData.password}
