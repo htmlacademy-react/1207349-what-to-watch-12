@@ -1,31 +1,26 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import NotFound from '../not-found/not-found';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getFilm } from '../../store/films-data/selectors';
+import { getFilm, getLoadingStatus } from '../../store/films-data/selectors';
 import { useEffect, useRef, useState } from 'react';
 import { fetchFilmAction } from '../../store/api-actions';
 import { getFormatTime } from '../../utils';
+import Loading from '../loading/loading';
 
 function Player(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [playVideo, setPlayVideo] = useState(false);
+  const [playVideo, setPlayVideo] = useState(true);
   const [remainderTime, setRemainderTime] = useState(0);
   const [videoProgress, setVideoProgress] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const filmId = Number(useParams().id);
   const film = useAppSelector(getFilm);
+  const isLoading = useAppSelector(getLoadingStatus);
 
   useEffect(() => {
     dispatch(fetchFilmAction(filmId));
   }, [dispatch, filmId]);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play();
-      setPlayVideo(true);
-    }
-  }, []);
 
   const handleExitClick = () => {
     navigate(-1);
@@ -46,6 +41,10 @@ function Player(): JSX.Element {
       setVideoProgress(Math.ceil(videoRef.current.currentTime * 100 / videoRef.current.duration));
     }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   if (film === null) {
     return <NotFound />;
