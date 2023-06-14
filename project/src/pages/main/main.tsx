@@ -18,12 +18,11 @@ function Main(): JSX.Element {
   const films = useAppSelector(getFilms);
   const promoFilm = useAppSelector(getPromoFilm);
   const selectedGenre = useAppSelector(getGenre);
+  const isLoading = useAppSelector(getLoadingStatus);
 
   const genres = [ALL_GENRES, ...new Set(films.map((film) => film.genre))];
 
   const filmsByGenre = selectedGenre === ALL_GENRES ? films : films.filter((film) => film.genre === selectedGenre);
-
-  const isLoading = useAppSelector(getLoadingStatus);
 
   if (isLoading) {
     return <Loading />;
