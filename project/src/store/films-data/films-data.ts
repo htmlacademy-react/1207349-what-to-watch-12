@@ -10,7 +10,7 @@ const initialState: FilmsData = {
   similarFilms: [],
   favoriteFilms: [],
   filmReviews: [],
-  isFilmsDataLoading: false,
+  isLoading: false,
   reviewsPublishStatus: RequestStatus.Idle,
 };
 
@@ -21,24 +21,45 @@ export const filmsData = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchFilmsAction.pending, (state) => {
-        state.isFilmsDataLoading = true;
+        state.isLoading = true;
       })
       .addCase(fetchFilmsAction.fulfilled, (state, action) => {
         state.films = action.payload;
-        state.isFilmsDataLoading = false;
+        state.isLoading = false;
       })
       .addCase(fetchFilmsAction.rejected, (state) => {
         state.films = [];
-        state.isFilmsDataLoading = false;
+        state.isLoading = false;
+      })
+      .addCase(fetchFilmAction.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(fetchFilmAction.fulfilled, (state, action) => {
         state.film = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchFilmAction.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(fetchPromoFilmAction.pending, (state, action) => {
+        state.isLoading = true;
       })
       .addCase(fetchPromoFilmAction.fulfilled, (state, action) => {
         state.promoFilm = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchPromoFilmAction.rejected, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(fetchSimilarFilmsAction.pending, (state, action) => {
+        state.isLoading = true;
       })
       .addCase(fetchSimilarFilmsAction.fulfilled, (state, action) => {
         state.similarFilms = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchSimilarFilmsAction.rejected, (state, action) => {
+        state.isLoading = false;
       })
       .addCase(fetchFavoriteFilmsAction.fulfilled, (state, action) => {
         state.favoriteFilms = action.payload;

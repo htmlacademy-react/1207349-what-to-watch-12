@@ -5,9 +5,10 @@ import { RELATED_DISPLAY_COUNT } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilmAction, fetchFilmReviewsAction, fetchSimilarFilmsAction } from '../../store/api-actions';
 import { useEffect } from 'react';
-import { getFilm, getFilmReviews, getSimilarFilm } from '../../store/films-data/selectors';
+import { getFilm, getFilmReviews, getLoadingStatus, getSimilarFilm } from '../../store/films-data/selectors';
 import PageContentLayout from '../../components/page-content-layout/page-content-layout';
 import FilmCard from '../../components/film-card/film-card';
+import Loading from '../loading/loading';
 
 function Film(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -23,6 +24,11 @@ function Film(): JSX.Element {
   const film = useAppSelector(getFilm);
   const similarFilm = useAppSelector(getSimilarFilm);
   const filmReviews = useAppSelector(getFilmReviews);
+  const isLoading = useAppSelector(getLoadingStatus);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   if (film === null) {
     return <NotFound />;
