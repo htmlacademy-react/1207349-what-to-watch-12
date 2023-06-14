@@ -5,9 +5,10 @@ import { getFavoriteFilms } from '../../store/films-data/selectors';
 
 function MyList(): JSX.Element {
   const films = useAppSelector(getFavoriteFilms);
+  const favoriteFilmsCount = useAppSelector(getFavoriteFilms).length;
 
   return (
-    <UserPageLayout title="My list">
+    <UserPageLayout title="My list" favoriteFilmsCount={favoriteFilmsCount}>
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
         <Catalog films={films} />
