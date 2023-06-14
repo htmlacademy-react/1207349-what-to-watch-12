@@ -11,7 +11,7 @@ function LoginForm(): JSX.Element {
     password: '',
   });
 
-  const fieldChangeHandler = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const hanldeFieldChange = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const {name, value} = evt.target;
 
     if (name === 'password' && !/^(?=.*[a-zA-Z])(?=.*\d)(?=.{1,}$)/.test(value)) {
@@ -23,17 +23,17 @@ function LoginForm(): JSX.Element {
     setFormData({...formData, [name]: value});
   };
 
-  const formSubmitHandler = (evt: FormEvent<HTMLFormElement>) => {
+  const hanldeFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(loginAction(formData));
   };
 
   return (
-    <form action="#" className="sign-in__form" onSubmit={formSubmitHandler}>
+    <form action="#" className="sign-in__form" onSubmit={hanldeFormSubmit}>
       <div className="sign-in__fields">
         <div className="sign-in__field">
           <input
-            onChange={fieldChangeHandler}
+            onChange={hanldeFieldChange}
             value={formData.login}
             className="sign-in__input"
             type="email"
@@ -45,7 +45,7 @@ function LoginForm(): JSX.Element {
         </div>
         <div className="sign-in__field">
           <input
-            onChange={fieldChangeHandler}
+            onChange={hanldeFieldChange}
             value={formData.password}
             className="sign-in__input"
             type="password"
