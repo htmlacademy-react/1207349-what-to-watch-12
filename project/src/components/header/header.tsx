@@ -1,28 +1,17 @@
 import classNames from 'classnames';
-import { Link, useLocation } from 'react-router-dom';
-import { AppRoute, AuthStatus } from '../../const';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { logoutAction } from '../../store/api-actions';
-import Breadcrumbs from '../breadcrumbs/breadcrumbs';
-import { getFavoriteFilms, getFilm } from '../../store/films-data/selectors';
-import { getAuthStatus } from '../../store/user-process/selectors';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
+import { ReactNode, memo } from 'react';
+import HeaderUserBlock from '../header-user-block/header-user-block';
 
 type HeaderProps = {
   className?: string;
   title?: string;
+  favoriteFilmsCount?: number;
+  children?: ReactNode;
 };
 
-function Header({className, title}: HeaderProps): JSX.Element {
-  const dispatch = useAppDispatch();
-  const location = useLocation();
-
-  const film = useAppSelector(getFilm);
-  const isAuth = useAppSelector(getAuthStatus) === AuthStatus.Auth;
-  const favoriteFilmsCount = useAppSelector(getFavoriteFilms).length;
-
-  const isMyListPage = AppRoute.MyList === location.pathname;
-  const isReviewPage = film && AppRoute.AddReview.replace(':id', film.id.toString()) === location.pathname;
-
+function Header({className, title, favoriteFilmsCount, children}: HeaderProps): JSX.Element {
   return (
     <header className={classNames('page-header', className)}>
       <div className="logo">
@@ -36,38 +25,15 @@ function Header({className, title}: HeaderProps): JSX.Element {
       {title &&
         <h1 className="page-title user-page__title">
           {title}
-          {isMyListPage && favoriteFilmsCount > 0 && <span className="user-page__film-count">{favoriteFilmsCount}</span>}
+          {favoriteFilmsCount && favoriteFilmsCount > 0 && <span className="user-page__film-count">{favoriteFilmsCount}</span>}
         </h1>}
 
-      {isReviewPage && <Breadcrumbs filmName={film.name} filmId={film.id} />}
+      {children}
 
-      {isAuth ? (
-        <ul className="user-block">
-          <li className="user-block__item">
-            <Link to={AppRoute.MyList} className="user-block__avatar" style={{ display: 'block' }}>
-              <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-            </Link>
-          </li>
-          <li className="user-block__item">
-            <Link
-              to={AppRoute.SignIn}
-              className="user-block__link"
-              onClick={(evt) => {
-                evt.preventDefault();
-                dispatch(logoutAction());
-              }}
-            >
-              Sign out
-            </Link>
-          </li>
-        </ul>
-      ) : (
-        <div className="user-block">
-          <Link to={AppRoute.SignIn} className="user-block__link">Sign in</Link>
-        </div>
-      )}
+      <HeaderUserBlock />
+
     </header>
   );
 }
 
-export default Header;
+export default memo(Header);

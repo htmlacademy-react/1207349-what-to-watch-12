@@ -9,6 +9,7 @@ import { fetchFilmAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { getFilm, getLoadingStatus } from '../../store/films-data/selectors';
 import Loading from '../loading/loading';
+import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 
 function Review(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -37,7 +38,9 @@ function Review(): JSX.Element {
 
         <h1 className="visually-hidden">WTW</h1>
 
-        <Header />
+        <Header>
+          <Breadcrumbs filmName={film.name} filmId={film.id} />
+        </Header>
 
         <FilmPoster
           filmPoster={film.posterImage}

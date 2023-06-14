@@ -3,6 +3,7 @@ import FilmInfo from '../film-info/film-info';
 import FilmPoster from '../film-poster/film-poster';
 import FilmBG from '../film-bg/film-bg';
 import { Film } from '../../types/films';
+import { memo } from 'react';
 
 type FilmCardPromoProps = {
   film: Film;
@@ -31,4 +32,4 @@ function FilmCardPromo({film}: FilmCardPromoProps): JSX.Element {
   );
 }
 
-export default FilmCardPromo;
+export default memo(FilmCardPromo);

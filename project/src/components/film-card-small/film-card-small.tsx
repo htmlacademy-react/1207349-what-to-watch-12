@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import VideoPlayer from '../video-player/video-player';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 type FilmCardSmallProps = {
   id: number;
@@ -45,4 +45,4 @@ function FilmCardSmall({id, name, previewImage, previewVideoLink}: FilmCardSmall
   );
 }
 
-export default FilmCardSmall;
+export default memo(FilmCardSmall);
