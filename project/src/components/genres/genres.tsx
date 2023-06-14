@@ -1,6 +1,7 @@
 import { useAppDispatch } from '../../hooks';
 import classNames from 'classnames';
 import { changeGenre } from '../../store/films-process/films-process';
+import { memo } from 'react';
 
 type GenresProps = {
   genres: string[];
@@ -30,4 +31,4 @@ function Genres({genres, selectedGenre}: GenresProps): JSX.Element {
   );
 }
 
-export default Genres;
+export default memo(Genres);
