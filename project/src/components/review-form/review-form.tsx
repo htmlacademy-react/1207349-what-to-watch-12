@@ -51,6 +51,7 @@ function ReviewForm({filmId}: ReviewFormProps): JSX.Element {
               count={arr.length - i}
               currRating={formData.rating}
               onChange={handleInputChange}
+              disabled={publishReviewsStatus === RequestStatus.Pending}
             />
           ))}
         </div>
@@ -63,6 +64,7 @@ function ReviewForm({filmId}: ReviewFormProps): JSX.Element {
           placeholder="Review text"
           value={formData.comment}
           onChange={handleInputChange}
+          disabled={publishReviewsStatus === RequestStatus.Pending}
         />
         <div className="add-review__submit">
           <button
