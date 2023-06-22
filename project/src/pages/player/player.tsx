@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { fetchFilmAction } from '../../store/api-actions';
 import { getFormatTime } from '../../utils';
 import Loading from '../loading/loading';
+import { AppRoute } from '../../const';
 
 function Player(): JSX.Element {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ function Player(): JSX.Element {
   }, []);
 
   const handleExitClick = () => {
-    navigate(-1);
+    navigate(AppRoute.Film.replace(':id', filmId.toString()));
   };
 
   const handlePlayClick = () => {
