@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { fetchFilmAction } from '../../store/api-actions';
 import { getFormatTime } from '../../utils';
 import Loading from '../loading/loading';
+import { AppRoute } from '../../const';
 
 function Player(): JSX.Element {
   const navigate = useNavigate();
@@ -22,8 +23,17 @@ function Player(): JSX.Element {
     dispatch(fetchFilmAction(filmId));
   }, [dispatch, filmId]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.play();
+        setPlayVideo(true);
+      }
+    }, 100);
+  }, []);
+
   const handleExitClick = () => {
-    navigate(-1);
+    navigate(AppRoute.Film.replace(':id', filmId.toString()));
   };
 
   const handlePlayClick = () => {
@@ -59,6 +69,7 @@ function Player(): JSX.Element {
         ref={videoRef}
         onTimeUpdate={handleVideoTimeUpdate}
         autoPlay
+        muted
       />
       <button onClick={handleExitClick} type="button" className="player__exit">Exit</button>
       <div className="player__controls">
@@ -67,7 +78,7 @@ function Player(): JSX.Element {
             <progress className="player__progress" value={videoProgress} max="100"></progress>
             <div className="player__toggler" style={{ left: `${videoProgress}%` }}>Toggler</div>
           </div>
-          <div className="player__time-value">{getFormatTime(remainderTime)}</div>
+          <div className="player__time-value">-{getFormatTime(remainderTime)}</div>
         </div>
         <div className="player__controls-row">
           <button type="button" className="player__play" onClick={handlePlayClick}>
@@ -80,7 +91,7 @@ function Player(): JSX.Element {
               </svg>}
             <span>{playVideo ? 'Stop' : 'Play'}</span>
           </button>
-          <div className="player__name">Transpotting</div>
+          <div className="player__name">{film.name}</div>
           <button type="button" className="player__full-screen" onClick={handleFullScreenClick}>
             <svg viewBox="0 0 27 27" width="27" height="27">
               <use xlinkHref="#full-screen"></use>

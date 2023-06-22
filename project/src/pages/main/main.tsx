@@ -3,7 +3,7 @@ import Catalog from '../../components/catalog/catalog';
 import Genres from '../../components/genres/genres';
 import { useAppSelector } from '../../hooks';
 import MoreButton from '../../components/more-button/more-butten';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getFilms, getPromoFilm } from '../../store/films-data/selectors';
 import { getGenre } from '../../store/films-process/selectors';
 import PageContentLayout from '../../components/page-content-layout/page-content-layout';
@@ -19,6 +19,10 @@ function Main(): JSX.Element {
   const promoFilm = useAppSelector(getPromoFilm);
   const selectedGenre = useAppSelector(getGenre);
   const isLoading = useAppSelector(getLoadingStatus);
+
+  useEffect(() => {
+    setShowCount(CARD_DISPLAY_COUNT);
+  }, [selectedGenre]);
 
   const genres = [ALL_GENRES, ...new Set(films.map((film) => film.genre))];
 
