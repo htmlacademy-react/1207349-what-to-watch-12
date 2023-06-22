@@ -25,7 +25,7 @@ function Header({className, title, favoriteFilmsCount, children}: HeaderProps): 
       {title &&
         <h1 className="page-title user-page__title">
           {title}
-          {favoriteFilmsCount && favoriteFilmsCount > 0 && <span className="user-page__film-count">{favoriteFilmsCount}</span>}
+          {favoriteFilmsCount && favoriteFilmsCount > 0 ? <span className="user-page__film-count">{favoriteFilmsCount}</span> : ''}
         </h1>}
 
       {children}
