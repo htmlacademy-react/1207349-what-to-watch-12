@@ -67,7 +67,7 @@ function Player(): JSX.Element {
             <progress className="player__progress" value={videoProgress} max="100"></progress>
             <div className="player__toggler" style={{ left: `${videoProgress}%` }}>Toggler</div>
           </div>
-          <div className="player__time-value">{getFormatTime(remainderTime)}</div>
+          <div className="player__time-value">-{getFormatTime(remainderTime)}</div>
         </div>
         <div className="player__controls-row">
           <button type="button" className="player__play" onClick={handlePlayClick}>
@@ -80,7 +80,7 @@ function Player(): JSX.Element {
               </svg>}
             <span>{playVideo ? 'Stop' : 'Play'}</span>
           </button>
-          <div className="player__name">Transpotting</div>
+          <div className="player__name">{film.name}</div>
           <button type="button" className="player__full-screen" onClick={handleFullScreenClick}>
             <svg viewBox="0 0 27 27" width="27" height="27">
               <use xlinkHref="#full-screen"></use>
