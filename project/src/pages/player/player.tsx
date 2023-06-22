@@ -22,6 +22,15 @@ function Player(): JSX.Element {
     dispatch(fetchFilmAction(filmId));
   }, [dispatch, filmId]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.play();
+        setPlayVideo(true);
+      }
+    }, 100);
+  }, []);
+
   const handleExitClick = () => {
     navigate(-1);
   };
@@ -59,6 +68,7 @@ function Player(): JSX.Element {
         ref={videoRef}
         onTimeUpdate={handleVideoTimeUpdate}
         autoPlay
+        muted
       />
       <button onClick={handleExitClick} type="button" className="player__exit">Exit</button>
       <div className="player__controls">
