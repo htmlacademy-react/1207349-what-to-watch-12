@@ -52,5 +52,5 @@ export enum RequestStatus {
 
 export enum CommentLength {
   Min = 50,
-  Max = 300,
+  Max = 400,
 }

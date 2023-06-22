@@ -34,11 +34,13 @@ function ReviewForm({filmId}: ReviewFormProps): JSX.Element {
   const handleFormSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(publishFilmReviewAction(formData));
-    setFormData({
-      rating: 0,
-      comment: '',
-      filmId: filmId,
-    });
+    if (publishReviewsStatus === RequestStatus.Fulfilled) {
+      setFormData({
+        rating: 0,
+        comment: '',
+        filmId: filmId,
+      });
+    }
   };
 
   return (
@@ -51,6 +53,7 @@ function ReviewForm({filmId}: ReviewFormProps): JSX.Element {
               count={arr.length - i}
               currRating={formData.rating}
               onChange={handleInputChange}
+              disabled={publishReviewsStatus === RequestStatus.Pending}
             />
           ))}
         </div>
@@ -63,6 +66,7 @@ function ReviewForm({filmId}: ReviewFormProps): JSX.Element {
           placeholder="Review text"
           value={formData.comment}
           onChange={handleInputChange}
+          disabled={publishReviewsStatus === RequestStatus.Pending}
         />
         <div className="add-review__submit">
           <button
